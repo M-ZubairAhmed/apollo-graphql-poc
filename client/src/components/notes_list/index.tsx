@@ -1,27 +1,16 @@
 import { Spinner, Stack } from 'react-bootstrap'
 
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 
 import NoteView from '../note_view'
-
-const ALL_NOTES = gql`
-  query GetAllNotes($categoryId: String) {
-    notes(categoryId: $categoryId) {
-      id
-      content
-      category {
-        label
-      }
-    }
-  }
-`
+import {GET_ALL_NOTES_QUERY} from '../../queries/notes'
 
 interface Props {
   selectedCategoryId: string
 }
 
 function NotesList(props: Props) {
-  const { loading, data } = useQuery(ALL_NOTES, {
+  const { loading, data } = useQuery(GET_ALL_NOTES_QUERY, {
     variables: {
       categoryId: props.selectedCategoryId
     },

@@ -1,6 +1,8 @@
-import React from 'react'
+import { gql, useMutation } from '@apollo/client'
 import { Badge, Button, Card } from 'react-bootstrap'
 import { Link } from 'react-router-dom'
+
+import { GET_ALL_NOTES_QUERY } from '../../queries/notes'
 
 interface Props {
   id: string
@@ -8,7 +10,28 @@ interface Props {
   category: string
 }
 
+const DELETE_NOTE_MUTATION = gql`
+  mutation DeleteNote($noteId: String!) {
+    deleteNote(id: $noteId) {
+      successful
+    }
+  }
+`
+
 function NoteView(props: Props) {
+  const [deleteNoteMutation] = useMutation(DELETE_NOTE_MUTATION, {
+    refetchQueries: [GET_ALL_NOTES_QUERY]
+  })
+
+  function handleNoteDelete() {
+    console.log('delete note', props.id)
+    deleteNoteMutation({
+      variables: {
+        noteId: props.id
+      }
+    })
+  }
+
   return (
     <Card>
       <Card.Body>
@@ -25,11 +48,21 @@ function NoteView(props: Props) {
         <Badge pill bg="dark">
           {props.category}
         </Badge>
-        <Link to={`/notes/${props.id}`}>
-          <Button variant="outline-secondary" size="sm">
-            View
+        <div>
+          <Link to={`/notes/${props.id}`}>
+            <Button variant="secondary" size="sm">
+              View
+            </Button>
+          </Link>
+          <Button
+            variant="danger"
+            size="sm"
+            style={{ marginLeft: '1rem' }}
+            onClick={handleNoteDelete}
+          >
+            Delete
           </Button>
-        </Link>
+        </div>
       </Card.Footer>
     </Card>
   )
