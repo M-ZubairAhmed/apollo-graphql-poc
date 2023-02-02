@@ -23,13 +23,18 @@ function App() {
       </Row>
       <Row>
         <Col xs={2}>
-          <Sidebar />
+          <Sidebar
+            onClick={(selectedCategoryId) =>
+              setSelectedCategoryId(selectedCategoryId)
+            }
+          />
         </Col>
         <Col xs={6}>
           <main>
             <Stack gap={5}>
               <CategorySelect
                 defaultValue={selectedCategoryId}
+                value={selectedCategoryId}
                 onChange={(selectedCategoryId) =>
                   setSelectedCategoryId(selectedCategoryId)
                 }
