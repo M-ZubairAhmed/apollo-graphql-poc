@@ -13,6 +13,7 @@ const ALL_CATEGORIES_QUERY = gql`
 
 interface Props {
   defaultValue: string
+  value: string
   onChange: (value: string) => void
 }
 
@@ -27,6 +28,7 @@ function CategorySelect(props: Props) {
     <Form.Select
       placeholder="Filter with category"
       defaultValue={props.defaultValue}
+      value={props.value}
       onChange={handleChange}
       disabled={loading}
     >

@@ -10,13 +10,27 @@ const ALL_CATEGORIES_QUERY = gql`
   }
 `
 
-function Sidebar() {
+interface Props {
+  onClick: (value: string) => void
+}
+
+function Sidebar(props: Props) {
   const { data } = useQuery(ALL_CATEGORIES_QUERY)
 
+  function handleClick(event: any) {
+    props.onClick(event.target.value)
+  }
+
   return (
-    <ButtonGroup vertical>
+    <ButtonGroup vertical
+    >
       {data?.categories?.map((category: any) => (
-        <Button variant="outline-secondary">{category.label}</Button>
+        <Button
+          variant="outline-secondary"
+          key={category.id}
+          value={category.id}
+          onClick={handleClick}
+          >{category.label}</Button>
       ))}
     </ButtonGroup>
   )
